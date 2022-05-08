@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Recipe book </title>
+        <meta charset="UTF=8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="fontawesome/css/all.css">
+    </head>
+
+    <body class="body-meals" onload="getRecipesList()">
+                    <div class="header">
+                        <a href="index.html">
+                            <i class="fas fa-arrow-left"></i>
+                            <img src="images/logo-text.png">
+                        </a>
+                    </div>
+
+                    <div id="meals">
+
+
+                                <div class="meals-list" id="output">
+                                </div>
+                            </div>
+
+                    </div>
+
+                <script> 
+                    var category = getCategory();
+
+                    function getRecipesList(){
+                        var rootPath="https://mysite.itvarsity.org/api/recipe-book/";
+                        var fullPath=rootPath + "get-recipes/?category=" + category;
+
+                        fetch (fullPath)
+                            .then (function(response){
+                                return response.json();
+                            })
+                            .then (function(data){
+                                var output=""; /* This is to display the actual info in teh browser*/
+                                for (a=0; a < data.length; a++){ /* This is a loop to display data array*/
+                                    output  +=`
+                                    <a href="show-recipe.html?id=${data[a].id}">
+                                        <div class="meals-list-item">
+                                            <h1> ${data[a].title} <i class="fas fa-chevron-circle-right"></i> </h1>
+                                            <p> ${data[a].description}/p>
+                                            </div>
+                                        </a>
+                                    `;/* This is to display HTMl in JS*/
+                            }
+                                document.getElementById("output").innerHTML=output;/* This is a to call the ID in HTML to display fetch+output+loop+data*/
+                            })
+                    }
+
+                    function getCategory(){
+                        var url=window.location.href;
+                        var pos=url.search("=");
+                        var category=url.slice(pos + 1);
+
+                        return category;
+                    }
+
+                </script>
+
+    </body>
+</html>
